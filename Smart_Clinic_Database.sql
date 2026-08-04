@@ -44,3 +44,21 @@ CREATE TABLE staff (
     hire_date        DATE NOT NULL, 
     staff_type       ENUM('DOCTOR','NURSE') NOT NULL 
 ); 
+-- Doctor is a subtype of Staff.
+CREATE TABLE doctors (  
+staff_id      INT PRIMARY KEY,     specialty    
+  VARCHAR(80) NOT NULL,     license_number   
+  VARCHAR(30) NOT NULL UNIQUE,  
+  consultation_fee DECIMAL(10,2) NOT NULL CHECK (consultation_fee >= 0),  
+  CONSTRAINT fk_doctor_staff         FOREIGN KEY (staff_id) REFERENCES staff(staff_id)  
+  ON UPDATE CASCADE ON DELETE CASCADE );
+-- Nurse is a subtype of Staff.
+CREATE TABLE nurses (  
+staff_id        
+INT PRIMARY KEY,     grade_level 
+  VARCHAR(30) NOT NULL,     shift_name  
+  ENUM('MORNING','EVENING','NIGHT') NOT NULL,
+  CONSTRAINT fk_nurse_staff    
+  FOREIGN KEY (staff_id) REFERENCES staff(staff_id)  
+  ON UPDATE CASCADE ON DELETE CASCADE
+);
