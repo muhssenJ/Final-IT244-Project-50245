@@ -62,3 +62,33 @@ INT PRIMARY KEY,     grade_level
   FOREIGN KEY (staff_id) REFERENCES staff(staff_id)  
   ON UPDATE CASCADE ON DELETE CASCADE
 );
+
+
+CREATE TABLE appointments (
+ appointment_id INT PRIMARY KEY,
+ patient_id INT NOT NULL,
+ doctor_id INT NOT NULL,
+ appointment_datetime DATETIME NOT NULL,
+ reason VARCHAR(255) NOT NULL,
+ status ENUM('SCHEDULED','COMPLETED','CANCELLED') NOT NULL DEFAULT 'SCHEDULED',
+ payment_status ENUM('UNPAID','PARTIALLY_PAID','PAID') NOT NULL DEFAULT 'UNPAID',
+ CONSTRAINT uq_doctor_slot UNIQUE (doctor_id, appointment_datetime),
+ CONSTRAINT fk_appointment_patient
+ FOREIGN KEY (patient_id) REFERENCES patients(patient_id)
+ ON UPDATE CASCADE ON DELETE RESTRICT,
+ CONSTRAINT fk_appointment_doctor
+ FOREIGN KEY (doctor_id) REFERENCES doctors(staff_id)
+ ON UPDATE CASCADE ON DELETE RESTRICT
+);
+
+CREATE TABLE treatments (
+ treatment_id INT PRIMARY KEY,
+ appointment_id INT NOT NULL UNIQUE,
+ diagnosis VARCHAR(255) NOT NULL,
+ procedure_name VARCHAR(150) NOT NULL,
+ treatment_notes TEXT,
+ treatment_cost DECIMAL(10,2) NOT NULL CHECK (treatment_cost >= 0),
+ CONSTRAINT fk_treatment_appointment
+ FOREIGN KEY (appointment_id) REFERENCES appointments(appointment_id)
+ ON UPDATE CASCADE ON DELETE CASCADE
+)
