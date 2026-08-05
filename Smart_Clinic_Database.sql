@@ -195,3 +195,26 @@ VALUES
 (203, 'Junior', 'MORNING'),
 (204, 'Junior', 'NIGHT'),
 (205, 'Senior', 'NIGHT');
+
+INSERT INTO appointments 
+(appointment_id, patient_id, doctor_id, appointment_datetime, reason, status, payment_status) 
+VALUES 
+(1001, 1, 101, '2026-07-20 09:00:00', 'Chest pain and high blood pressure', 'COMPLETED', 'PAID'), 
+(1002, 2, 102, '2026-07-20 10:00:00', 'Persistent skin rash',               'COMPLETED', 'PAID'), 
+(1003, 3, 105, '2026-07-21 11:30:00', 'Fatigue and dizziness',             'COMPLETED', 'PARTIALLY_PAID'), 
+(1004, 4, 104, '2026-07-22 14:00:00', 'Knee pain after exercise',          'COMPLETED', 'PAID'), 
+(1005, 5, 103, '2026-07-23 09:30:00', 'Fever and sore throat',             'COMPLETED', 'PAID'), 
+(1006, 6, 101, '2026-07-24 13:00:00', 'Cardiology follow-up',              'COMPLETED', 'PAID'), 
+(1007, 1, 105, '2026-07-25 16:00:00', 'Annual health check',               'CANCELLED', 'UNPAID'), 
+(1008, 2, 102, '2026-07-26 10:30:00', 'Dermatology follow-up',             'SCHEDULED', 'UNPAID'); 
+
+
+INSERT INTO treatments 
+(treatment_id, appointment_id, diagnosis, procedure_name, treatment_notes, treatment_cost) 
+VALUES 
+(5001, 1001, 'Hypertension',             'ECG and clinical examination', 'Low-sodium diet and follow-up in four weeks.', 400.00), 
+(5002, 1002, 'Atopic eczema',            'Skin examination',             'Use prescribed cream and avoid irritants.',    250.00), 
+(5003, 1003, 'Iron-deficiency anemia',   'Blood test review',             'Increase iron-rich foods and repeat CBC.',     300.00), 
+(5004, 1004, 'Early knee osteoarthritis','Knee X-ray and examination',    'Physiotherapy and reduced high-impact activity.',350.00), 
+(5005, 1005, 'Viral upper respiratory infection','Pediatric evaluation','Rest, fluids, and monitor temperature.',         180.00), 
+(5006, 1006, 'Stable cardiac arrhythmia','Follow-up ECG',                 'Continue medication and return in six weeks.', 300.00); 
