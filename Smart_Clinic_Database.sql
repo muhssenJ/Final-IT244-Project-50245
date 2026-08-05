@@ -43,24 +43,27 @@ CREATE TABLE staff (
     email            VARCHAR(100) NOT NULL UNIQUE, 
     hire_date        DATE NOT NULL, 
     staff_type       ENUM('DOCTOR','NURSE') NOT NULL 
-); 
+);
+
 -- Doctor is a subtype of Staff.
 CREATE TABLE doctors (  
-staff_id      INT PRIMARY KEY,     specialty    
-  VARCHAR(80) NOT NULL,     license_number   
-  VARCHAR(30) NOT NULL UNIQUE,  
-  consultation_fee DECIMAL(10,2) NOT NULL CHECK (consultation_fee >= 0),  
-  CONSTRAINT fk_doctor_staff         FOREIGN KEY (staff_id) REFERENCES staff(staff_id)  
-  ON UPDATE CASCADE ON DELETE CASCADE );
+ staff_id      INT PRIMARY KEY,
+ specialty    VARCHAR(80) NOT NULL,
+ license_number   VARCHAR(30) NOT NULL UNIQUE,  
+ consultation_fee DECIMAL(10,2) NOT NULL CHECK (consultation_fee >= 0),  
+   CONSTRAINT fk_doctor_staff
+     FOREIGN KEY (staff_id) REFERENCES staff(staff_id)  
+     ON UPDATE CASCADE ON DELETE CASCADE
+ );
+
 -- Nurse is a subtype of Staff.
 CREATE TABLE nurses (  
-staff_id        
-INT PRIMARY KEY,     grade_level 
-  VARCHAR(30) NOT NULL,     shift_name  
-  ENUM('MORNING','EVENING','NIGHT') NOT NULL,
-  CONSTRAINT fk_nurse_staff    
-  FOREIGN KEY (staff_id) REFERENCES staff(staff_id)  
-  ON UPDATE CASCADE ON DELETE CASCADE
+ staff_id        INT PRIMARY KEY,
+  grade_level VARCHAR(30) NOT NULL,
+  shift_name  ENUM('MORNING','EVENING','NIGHT') NOT NULL,
+   CONSTRAINT fk_nurse_staff    
+    FOREIGN KEY (staff_id) REFERENCES staff(staff_id)  
+    ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 
@@ -91,4 +94,43 @@ CREATE TABLE treatments (
  CONSTRAINT fk_treatment_appointment
  FOREIGN KEY (appointment_id) REFERENCES appointments(appointment_id)
  ON UPDATE CASCADE ON DELETE CASCADE
-)
+);
+
+
+CREATE TABLE medicines ( 
+    medicine_id       INT PRIMARY KEY, 
+    medicine_name     VARCHAR(120) NOT NULL UNIQUE, 
+    dosage_form       VARCHAR(50) NOT NULL, 
+    unit_price        DECIMAL(10,2) NOT NULL CHECK (unit_price >= 0), 
+    stock_quantity    INT NOT NULL CHECK (stock_quantity >= 0) 
+); 
+
+ 
+
+CREATE TABLE prescriptions ( 
+    prescription_id   INT PRIMARY KEY, 
+    treatment_id      INT NOT NULL, 
+    prescribed_date   DATE NOT NULL, 
+    instructions      VARCHAR(255), 
+    CONSTRAINT fk_prescription_treatment 
+        FOREIGN KEY (treatment_id) REFERENCES treatments(treatment_id) 
+        ON UPDATE CASCADE ON DELETE CASCADE 
+); 
+
+ 
+
+CREATE TABLE prescription_items ( 
+    prescription_id   INT NOT NULL, 
+    medicine_id       INT NOT NULL, 
+    dosage            VARCHAR(50) NOT NULL, 
+    frequency         VARCHAR(80) NOT NULL, 
+    duration_days     INT NOT NULL CHECK (duration_days > 0), 
+    quantity          INT NOT NULL CHECK (quantity > 0), 
+    PRIMARY KEY (prescription_id, medicine_id), 
+    CONSTRAINT fk_item_prescription 
+        FOREIGN KEY (prescription_id) REFERENCES prescriptions(prescription_id) 
+        ON UPDATE CASCADE ON DELETE CASCADE, 
+    CONSTRAINT fk_item_medicine 
+        FOREIGN KEY (medicine_id) REFERENCES medicines(medicine_id) 
+        ON UPDATE CASCADE ON DELETE RESTRICT 
+); 
