@@ -134,3 +134,25 @@ CREATE TABLE prescription_items (
         FOREIGN KEY (medicine_id) REFERENCES medicines(medicine_id) 
         ON UPDATE CASCADE ON DELETE RESTRICT 
 ); 
+CREATE TABLE payments ( 
+ payment_id        INT PRIMARY KEY,
+ appointment_id    INT NOT NULL,
+ payment_date      DATETIME NOT NULL,
+ amount            DECIMAL(10,2) NOT NULL CHECK
+ (amount > 0),     payment_method    ENUM('CASH','CARD','TRANSFER') NOT NULL,
+ reference_number  VARCHAR(50) UNIQUE,  
+ payment_status    ENUM('COMPLETED','REFUNDED') NOT NULL DEFAULT 'COMPLETED', 
+ CONSTRAINT fk_payment_appointment    
+ FOREIGN KEY (appointment_id) REFERENCES 
+ appointments(appointment_id)         ON UPDATE CASCADE ON DELETE RESTRICT 
+ );  
+CREATE TABLE appointment_status_log (
+ log_id             INT AUTO_INCREMENT PRIMARY KEY, 
+ appointment_id     INT NOT NULL, 
+ old_status         VARCHAR(20) NOT NULL,
+ new_status         VARCHAR(20) NOT NULL, 
+ changed_at         TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
+ CONSTRAINT fk_status_log_appointment 
+ FOREIGN KEY (appointment_id) REFERENCES appointments(appointment_id) 
+ ON UPDATE CASCADE ON DELETE CASCADE 
+);
