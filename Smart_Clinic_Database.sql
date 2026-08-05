@@ -156,3 +156,42 @@ CREATE TABLE appointment_status_log (
  FOREIGN KEY (appointment_id) REFERENCES appointments(appointment_id) 
  ON UPDATE CASCADE ON DELETE CASCADE 
 );
+-- ============================================================
+-- 2. DATA INSERTION (AT LEAST FIVE RECORDS IN MAIN TABLES)
+-- ============================================================
+INSERT INTO patients
+(patient_id, national_id, first_name, last_name, gender, date_of_birth, phone, blood_type)
+VALUES
+(1, '1010000001', 'Ahmed', 'Al-Harbi', 'M', '1990-04-12', '0500000001', 'A+'),
+(2, '1010000002', 'Sara', 'Al-Qahtani', 'F', '1988-11-05', '0500000002', 'O+'),
+(3, '1010000003', 'Omar', 'Al-Shammari', 'M', '1979-06-23', '0500000003', 'B+'),
+(4, '1010000004', 'Laila', 'Al-Zahrani', 'F', '1995-02-14', '0500000004', 'AB+'),
+(5, '1010000005', 'Youssef','Al-Dosari', 'M', '2001-09-30', '0500000005', 'O-'),
+(6, '1010000006', 'Huda', 'Al-Mutairi', 'F', '1968-12-08', '0500000006', 'A-');
+INSERT INTO staff
+(staff_id, first_name, last_name, phone, email, hire_date, staff_type)
+VALUES
+(101, 'Fahad', 'Al-Salem', '0551000001', 'fahad.salem@clinic.sa', '2018-01-15', 'DOCTOR'),
+(102, 'Mona', 'Al-Rashid', '0551000002', 'mona.rashid@clinic.sa', '2019-03-10', 'DOCTOR'),
+(103, 'Khalid', 'Al-Anazi', '0551000003', 'khalid.anazi@clinic.sa','2020-06-01', 'DOCTOR'),
+(104, 'Reem', 'Al-Sayed', '0551000004', 'reem.sayed@clinic.sa', '2017-09-20', 'DOCTOR'),
+(105, 'Nasser', 'Al-Ghamdi', '0551000005', 'nasser.ghamdi@clinic.sa','2021-02-14','DOCTOR'),
+(201, 'Abeer', 'Al-Hassan', '0552000001', 'abeer.hassan@clinic.sa','2020-01-05', 'NURSE'),
+(202, 'Majed', 'Al-Otaibi', '0552000002', 'majed.otaibi@clinic.sa','2018-11-11', 'NURSE'),
+(203, 'Noor', 'Al-Yami', '0552000003', 'noor.yami@clinic.sa', '2022-04-18', 'NURSE'),
+(204, 'Rakan', 'Al-Qahtani', '0552000004', 'rakan.qahtani@clinic.sa','2019-07-07','NURSE'),
+(205, 'Hanan', 'Al-Malki', '0552000005', 'hanan.malki@clinic.sa', '2021-10-25', 'NURSE');
+INSERT INTO doctors (staff_id, specialty, license_number, consultation_fee)
+VALUES
+(101, 'Cardiology', 'MED-1001', 250.00),
+(102, 'Dermatology', 'MED-1002', 200.00),
+(103, 'Pediatrics', 'MED-1003', 180.00),
+(104, 'Orthopedics', 'MED-1004', 220.00),
+(105, 'General Medicine', 'MED-1005', 150.00);
+INSERT INTO nurses (staff_id, grade_level, shift_name)
+VALUES
+(201, 'Senior', 'MORNING'),
+(202, 'Senior', 'EVENING'),
+(203, 'Junior', 'MORNING'),
+(204, 'Junior', 'NIGHT'),
+(205, 'Senior', 'NIGHT');
