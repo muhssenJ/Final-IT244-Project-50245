@@ -243,3 +243,12 @@ INSERT INTO prescription_items (prescription_id, medicine_id, dosage, frequency,
  (7005, 304, '500 mg',      'Every 8 hours if needed',   3, 10),
  (7005, 306, 'Two sprays',  'Three times daily',         5,  1),
  (7003, 304, '500 mg',      'Once daily if headache',    5,  5); 
+NSERT INTO payments
+(payment_id, appointment_id, payment_date, amount, payment_method, reference_number, payment_status)
+VALUES
+(9001, 1001, '2026-07-20 09:45:00', 400.00, 'CARD', 'TXN-1001', 'COMPLETED'),
+(9002, 1002, '2026-07-20 10:35:00', 250.00, 'CASH', NULL, 'COMPLETED'),
+(9003, 1003, '2026-07-21 12:15:00', 150.00, 'CARD', 'TXN-1003', 'COMPLETED'),
+(9004, 1004, '2026-07-22 15:10:00', 350.00, 'TRANSFER', 'TXN-1004', 'COMPLETED'),
+(9005, 1005, '2026-07-23 10:05:00', 180.00, 'CASH', NULL, 'COMPLETED'),
+(9006, 1006, '2026-07-24 13:40:00', 300.00, 'CARD', 'TXN-1006', 'COMPLETED');
