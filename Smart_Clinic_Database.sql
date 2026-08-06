@@ -218,3 +218,28 @@ VALUES
 (5004, 1004, 'Early knee osteoarthritis','Knee X-ray and examination',    'Physiotherapy and reduced high-impact activity.',350.00), 
 (5005, 1005, 'Viral upper respiratory infection','Pediatric evaluation','Rest, fluids, and monitor temperature.',         180.00), 
 (5006, 1006, 'Stable cardiac arrhythmia','Follow-up ECG',                 'Continue medication and return in six weeks.', 300.00); 
+INSERT INTO medicines
+ (medicine_id, medicine_name, dosage_form, unit_price, stock_quantity)
+ VALUES (301, 'Amlodipine 5 mg',       'Tablet', 18.50, 120),
+ (302, 'Hydrocortisone 1%',     'Cream',  22.00,  65),
+ (303, 'Ferrous Sulfate 200 mg','Tablet', 15.75,  90),
+ (304, 'Paracetamol 500 mg',    'Tablet',  8.00, 200),
+ (305, 'Diclofenac Gel',        'Gel',    19.50,  70),
+ (306, 'Saline Nasal Spray',    'Spray',  12.25,  80);
+INSERT INTO prescriptions
+ (prescription_id, treatment_id, prescribed_date, instructions)
+ VALUES (7001, 5001, '2026-07-20', 'Take after breakfast and monitor blood pressure.'),
+ (7002, 5002, '2026-07-20', 'Apply a thin layer twice daily.'), 
+ (7003, 5003, '2026-07-21', 'Take with food; avoid tea for two hours.'), 
+ (7004, 5004, '2026-07-22', 'Apply to the painful area and begin physiotherapy.'),
+ (7005, 5005, '2026-07-23', 'Use only when fever or pain is present.'); 
+INSERT INTO prescription_items (prescription_id, medicine_id, dosage, frequency, duration_days, quantity)
+ VALUES
+ (7001, 301, '5 mg',        'Once daily',               30, 30),
+ (7002, 302, 'Thin layer',  'Twice daily',              10,  1), 
+ (7003, 303, '200 mg',      'Once daily',               30, 30),
+ (7004, 305, 'Small amount','Three times daily',        14,  1), 
+ (7004, 304, '500 mg',      'Every 8 hours if needed',   5, 15), 
+ (7005, 304, '500 mg',      'Every 8 hours if needed',   3, 10),
+ (7005, 306, 'Two sprays',  'Three times daily',         5,  1),
+ (7003, 304, '500 mg',      'Once daily if headache',    5,  5); 
