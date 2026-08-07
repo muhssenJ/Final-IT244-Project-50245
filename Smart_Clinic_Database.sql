@@ -242,8 +242,9 @@ INSERT INTO prescription_items (prescription_id, medicine_id, dosage, frequency,
  (7004, 304, '500 mg',      'Every 8 hours if needed',   5, 15), 
  (7005, 304, '500 mg',      'Every 8 hours if needed',   3, 10),
  (7005, 306, 'Two sprays',  'Three times daily',         5,  1),
- (7003, 304, '500 mg',      'Once daily if headache',    5,  5); 
-NSERT INTO payments
+ (7003, 304, '500 mg',      'Once daily if headache',    5,  5);
+
+INSERT INTO payments
 (payment_id, appointment_id, payment_date, amount, payment_method, reference_number, payment_status)
 VALUES
 (9001, 1001, '2026-07-20 09:45:00', 400.00, 'CARD', 'TXN-1001', 'COMPLETED'),
@@ -252,3 +253,33 @@ VALUES
 (9004, 1004, '2026-07-22 15:10:00', 350.00, 'TRANSFER', 'TXN-1004', 'COMPLETED'),
 (9005, 1005, '2026-07-23 10:05:00', 180.00, 'CASH', NULL, 'COMPLETED'),
 (9006, 1006, '2026-07-24 13:40:00', 300.00, 'CARD', 'TXN-1006', 'COMPLETED');
+
+
+-- ============================================================ 
+-- 3. VIEW 
+-- ============================================================ 
+
+CREATE OR REPLACE VIEW vw_appointment_summary AS 
+SELECT 
+    a.appointment_id, 
+    a.appointment_datetime, 
+    CONCAT(p.first_name, ' ', p.last_name) AS patient_name, 
+    CONCAT(s.first_name, ' ', s.last_name) AS doctor_name, 
+    d.specialty, 
+    a.status, 
+    a.payment_status, 
+    COALESCE(t.diagnosis, 'Not recorded') AS diagnosis, 
+    COALESCE(t.treatment_cost, 0.00) AS treatment_cost, 
+    COALESCE(SUM(CASE WHEN pay.payment_status = 'COMPLETED' THEN pay.amount ELSE 0 END), 0.00) AS amount_paid 
+FROM appointments a 
+JOIN patients p ON p.patient_id = a.patient_id 
+JOIN doctors d ON d.staff_id = a.doctor_id 
+JOIN staff s ON s.staff_id = d.staff_id 
+LEFT JOIN treatments t ON t.appointment_id = a.appointment_id 
+LEFT JOIN payments pay ON pay.appointment_id = a.appointment_id 
+GROUP BY 
+    a.appointment_id, a.appointment_datetime, 
+    p.first_name, p.last_name, 
+    s.first_name, s.last_name, 
+    d.specialty, a.status, a.payment_status, 
+    t.diagnosis, t.treatment_cost; 
