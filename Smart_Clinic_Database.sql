@@ -386,4 +386,4 @@ SELECT * FROM treatments;
 SELECT * FROM medicines;
 SELECT * FROM prescriptions;
 SELECT * FROM prescription_items;
-SELECT * FROM payments
+SELECT * FROM payments;
