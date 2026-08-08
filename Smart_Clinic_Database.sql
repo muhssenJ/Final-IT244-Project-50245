@@ -355,3 +355,12 @@ LEFT JOIN appointments a ON a.doctor_id = d.staff_id
 LEFT JOIN treatments t ON t.appointment_id = a.appointment_id 
 GROUP BY d.staff_id, s.first_name, s.last_name, d.specialty 
 ORDER BY total_treatment_value DESC; 
+-- E. UPDATE statement: complete appointment 1008.
+-- The trigger automatically records the status change. 
+UPDATE appointments
+ SET status = 'COMPLETED'
+ WHERE appointment_id = 1008;
+SELECT *
+ FROM appointment_status_log
+ WHERE appointment_id = 1008
+ ORDER BY log_id;
