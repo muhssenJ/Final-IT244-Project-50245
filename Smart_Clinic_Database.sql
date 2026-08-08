@@ -134,6 +134,7 @@ CREATE TABLE prescription_items (
         FOREIGN KEY (medicine_id) REFERENCES medicines(medicine_id) 
         ON UPDATE CASCADE ON DELETE RESTRICT 
 ); 
+
 CREATE TABLE payments ( 
  payment_id        INT PRIMARY KEY,
  appointment_id    INT NOT NULL,
@@ -157,7 +158,7 @@ CREATE TABLE appointment_status_log (
  ON UPDATE CASCADE ON DELETE CASCADE 
 );
 -- ============================================================
--- 2. DATA INSERTION (AT LEAST FIVE RECORDS IN MAIN TABLES)
+-- 2. DATA INSERTION
 -- ============================================================
 INSERT INTO patients
 (patient_id, national_id, first_name, last_name, gender, date_of_birth, phone, blood_type)
@@ -299,7 +300,6 @@ END$$
  DELIMITER ; 
 -- ============================================================
 -- 5. REQUIRED SQL OPERATIONS
--- Run each statement separately in MySQL Workbench to capture results.
 -- ============================================================
 -- A. SELECT statement: list scheduled appointments.
 SELECT appointment_id, patient_id, doctor_id, appointment_datetime, reason
@@ -314,11 +314,11 @@ SELECT
  d.specialty,
  a.appointment_datetime,
  a.status
-FROM appointments a
-JOIN patients p ON p.patient_id = a.patient_id
-JOIN doctors d ON d.staff_id = a.doctor_id
-JOIN staff s ON s.staff_id = d.staff_id
-ORDER BY a.appointment_datetime;
+ FROM appointments a
+ JOIN patients p ON p.patient_id = a.patient_id
+ JOIN doctors d ON d.staff_id = a.doctor_id
+ JOIN staff s ON s.staff_id = d.staff_id
+ ORDER BY a.appointment_datetime;
 
 -- C. Nested query: patients whose completed payments exceed the average patient total. 
 SELECT 
