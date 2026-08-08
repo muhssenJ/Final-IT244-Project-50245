@@ -364,3 +364,26 @@ SELECT *
  FROM appointment_status_log
  WHERE appointment_id = 1008
  ORDER BY log_id;
+-- F. DELETE statement: create and remove a temporary test medicine.
+INSERT INTO medicines
+(medicine_id, medicine_name, dosage_form, unit_price, stock_quantity)
+VALUES (999, 'Temporary Test Medicine', 'Tablet', 1.00, 1);
+DELETE FROM medicines
+WHERE medicine_id = 999;
+SELECT * FROM medicines WHERE medicine_id = 999;
+-- G. Query the VIEW.
+SELECT *
+FROM vw_appointment_summary
+ORDER BY appointment_datetime;
+-- Additional verification queries.
+SHOW TABLES;
+SELECT * FROM patients;
+SELECT * FROM staff;
+SELECT * FROM doctors;
+SELECT * FROM nurses;
+SELECT * FROM appointments;
+SELECT * FROM treatments;
+SELECT * FROM medicines;
+SELECT * FROM prescriptions;
+SELECT * FROM prescription_items;
+SELECT * FROM payments
