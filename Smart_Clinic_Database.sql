@@ -297,3 +297,25 @@ DELIMITER $$
 END IF;
 END$$
  DELIMITER ; 
+-- ============================================================
+-- 5. REQUIRED SQL OPERATIONS
+-- Run each statement separately in MySQL Workbench to capture results.
+-- ============================================================
+-- A. SELECT statement: list scheduled appointments.
+SELECT appointment_id, patient_id, doctor_id, appointment_datetime, reason
+FROM appointments
+WHERE status = 'SCHEDULED'
+ORDER BY appointment_datetime;
+-- B. JOIN query: appointment details with patient and doctor names.
+SELECT
+ a.appointment_id,
+ CONCAT(p.first_name, ' ', p.last_name) AS patient_name,
+ CONCAT(s.first_name, ' ', s.last_name) AS doctor_name,
+ d.specialty,
+ a.appointment_datetime,
+ a.status
+FROM appointments a
+JOIN patients p ON p.patient_id = a.patient_id
+JOIN doctors d ON d.staff_id = a.doctor_id
+JOIN staff s ON s.staff_id = d.staff_id
+ORDER BY a.appointment_datetime;
