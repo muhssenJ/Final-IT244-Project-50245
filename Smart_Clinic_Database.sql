@@ -283,3 +283,17 @@ GROUP BY
     s.first_name, s.last_name, 
     d.specialty, a.status, a.payment_status, 
     t.diagnosis, t.treatment_cost; 
+-- ============================================================
+-- 4. TRIGGER
+-- ============================================================ 
+DELIMITER $$ 
+ CREATE TRIGGER trg_appointment_status_audit
+ AFTER UPDATE ON appointments
+ FOR EACH ROW BEGIN IF OLD.status <> NEW.status 
+ THEN INSERT INTO 
+ appointment_status_log (appointment_id, old_status, new_status) 
+ VALUES
+ (NEW.appointment_id, OLD.status, NEW.status);
+END IF;
+END$$
+ DELIMITER ; 
