@@ -319,3 +319,39 @@ JOIN patients p ON p.patient_id = a.patient_id
 JOIN doctors d ON d.staff_id = a.doctor_id
 JOIN staff s ON s.staff_id = d.staff_id
 ORDER BY a.appointment_datetime;
+
+-- C. Nested query: patients whose completed payments exceed the average patient total. 
+SELECT 
+    p.patient_id, 
+    CONCAT(p.first_name, ' ', p.last_name) AS patient_name, 
+    SUM(pay.amount) AS total_paid 
+FROM patients p 
+JOIN appointments a ON a.patient_id = p.patient_id 
+JOIN payments pay ON pay.appointment_id = a.appointment_id 
+WHERE pay.payment_status = 'COMPLETED' 
+GROUP BY p.patient_id, p.first_name, p.last_name 
+HAVING SUM(pay.amount) > ( 
+    SELECT AVG(patient_total) 
+    FROM ( 
+        SELECT SUM(pay2.amount) AS patient_total 
+        FROM appointments a2 
+        JOIN payments pay2 ON pay2.appointment_id = a2.appointment_id 
+        WHERE pay2.payment_status = 'COMPLETED' 
+        GROUP BY a2.patient_id 
+    ) AS totals 
+) 
+ORDER BY total_paid DESC; 
+
+-- D. Aggregate functions with GROUP BY: workload and treatment revenue per doctor. 
+SELECT 
+    d.staff_id AS doctor_id, 
+    CONCAT(s.first_name, ' ', s.last_name) AS doctor_name, 
+    d.specialty, 
+    COUNT(DISTINCT a.appointment_id) AS appointment_count, 
+    COALESCE(SUM(t.treatment_cost), 0.00) AS total_treatment_value 
+FROM doctors d 
+JOIN staff s ON s.staff_id = d.staff_id 
+LEFT JOIN appointments a ON a.doctor_id = d.staff_id 
+LEFT JOIN treatments t ON t.appointment_id = a.appointment_id 
+GROUP BY d.staff_id, s.first_name, s.last_name, d.specialty 
+ORDER BY total_treatment_value DESC; 
